@@ -17,3 +17,8 @@ df_casualties = pd.read_csv('C:/Users/umarb/OneDrive/Documents/BS in CSE/3rd Yea
 # Dropping rows with missing values in critical columns
 df_accidents = df_accidents.dropna(subset=['Fatal_Accident_Index'])
 df_casualties = df_casualties.dropna(subset=['Fatal_Accident_Index'])
+
+# Convert age to numeric
+df_casualties['Fatal_Casualty_Age'] = pd.to_numeric(df_casualties['Fatal_Casualty_Age'], errors='coerce')
+df_casualties.dropna(subset=['Fatal_Casualty_Age'], inplace=True)
+df_casualties['Fatal_Casualty_Age'] = df_casualties['Fatal_Casualty_Age'].astype(int)

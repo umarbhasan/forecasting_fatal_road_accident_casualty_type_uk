@@ -13,3 +13,7 @@ from sklearn.model_selection import cross_val_score
 # Load the datasets
 df_accidents = pd.read_csv('C:/Users/umarb/OneDrive/Documents/BS in CSE/3rd Year/1st Semester/CSE445/fatalaccidentdata.csv')
 df_casualties = pd.read_csv('C:/Users/umarb/OneDrive/Documents/BS in CSE/3rd Year/1st Semester/CSE445/fatalcasualtydata.csv')
+
+# Dropping rows with missing values in critical columns
+df_accidents = df_accidents.dropna(subset=['Fatal_Accident_Index'])
+df_casualties = df_casualties.dropna(subset=['Fatal_Accident_Index'])

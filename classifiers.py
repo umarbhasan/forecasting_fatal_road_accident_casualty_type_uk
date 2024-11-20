@@ -139,3 +139,19 @@ knn_avg_expected_loss, knn_avg_bias, knn_avg_var = bias_variance_decomp(
 print(f'Average expected loss: {knn_avg_expected_loss:.4f}')
 print(f'Average bias: {knn_avg_bias:.4f}')
 print(f'Average variance: {knn_avg_var:.4f}\n')
+
+# --- Decision Tree ---
+print("Decision Tree:")
+dt_avg_expected_loss, dt_avg_bias, dt_avg_var = bias_variance_decomp(
+    dt_model,
+    X_train, 
+    y_train_encoded, 
+    X_test, 
+    y_test_encoded,
+    loss='0-1_loss',
+    num_rounds=100,
+    random_seed=40
+)
+print(f'Average expected loss: {dt_avg_expected_loss:.4f}')
+print(f'Average bias: {dt_avg_bias:.4f}')
+print(f'Average variance: {dt_avg_var:.4f}\n')

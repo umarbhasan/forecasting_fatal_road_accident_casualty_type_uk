@@ -159,3 +159,7 @@ print(f'Average variance: {dt_avg_var:.4f}\n')
 # Perform cross-validation for Logistic Regression
 lr_cv_scores = cross_val_score(lr_model, X_train_scaled, y_train, cv=10)
 print("Logistic Regression CV Score:", lr_cv_scores.mean())
+
+# Perform cross-validation for KNN
+knn_cv_scores = cross_val_score(knn_model, X_train, y_train, cv=10)
+print("KNN CV Score:", knn_cv_scores.mean())

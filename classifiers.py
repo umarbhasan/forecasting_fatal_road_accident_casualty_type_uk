@@ -33,3 +33,6 @@ df = pd.merge(df_accidents, df_casualties, on='Fatal_Accident_Index', how='inner
 
 # One-hot encode the `Month_of_Accident` column
 month_encoded = pd.get_dummies(df['Month_of_Accident'], prefix='Month')
+
+# Concatenate the encoded month columns with the original DataFrame
+df = pd.concat([df, month_encoded], axis=1)

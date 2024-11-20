@@ -89,3 +89,14 @@ knn_predictions = knn_model.predict(X_test_scaled)
 # Print accuracy and classification report for KNN
 print("KNN Accuracy:", accuracy_score(y_test, knn_predictions))
 print(classification_report(y_test, knn_predictions, zero_division=0))
+
+# Initialize and train Decision Tree classifier
+dt_model = DecisionTreeClassifier(random_state=40, class_weight='balanced')
+dt_model.fit(X_train, y_train)
+
+#Predictions for DT
+dt_predictions = dt_model.predict(X_test)
+
+# Print accuracy and classification report for DT
+print("Decision Tree Accuracy:", accuracy_score(y_test, dt_predictions))
+print(classification_report(y_test, dt_predictions, zero_division=0))

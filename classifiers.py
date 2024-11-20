@@ -87,7 +87,7 @@ knn_model.fit(X_train_scaled, y_train)
 knn_predictions = knn_model.predict(X_test_scaled)
 
 # Print accuracy and classification report for KNN
-print("KNN Accuracy:", accuracy_score(y_test, knn_predictions))
+print("k-NN Accuracy:", accuracy_score(y_test, knn_predictions))
 print(classification_report(y_test, knn_predictions, zero_division=0))
 
 # Initialize and train Decision Tree classifier
@@ -125,7 +125,7 @@ print(f'Average bias: {lr_avg_bias:.4f}')
 print(f'Average variance: {lr_avg_var:.4f}\n')
 
 # --- KNN ---
-print("KNN:")
+print("k-NN:")
 knn_avg_expected_loss, knn_avg_bias, knn_avg_var = bias_variance_decomp(
     knn_model,
     X_train_scaled, 
@@ -162,7 +162,7 @@ print("Logistic Regression CV Score:", lr_cv_scores.mean())
 
 # Perform cross-validation for KNN
 knn_cv_scores = cross_val_score(knn_model, X_train_scaled, y_train, cv=10)
-print("KNN CV Score:", knn_cv_scores.mean())
+print("k-NN CV Score:", knn_cv_scores.mean())
 
 # Perform cross-validation for Decision Tree
 dt_cv_scores = cross_val_score(dt_model, X_train_scaled, y_train, cv=10)
@@ -174,7 +174,7 @@ lr_cm = confusion_matrix(y_test, lr_predictions)
 # Plot confusion matrix for LR
 plt.figure(figsize=(15, 15))
 sns.heatmap(lr_cm, annot=True, fmt='d', cmap='Blues', xticklabels=lr_model.classes_, yticklabels=lr_model.classes_)
-plt.title('Logistic Regression Confusion Matrix')
+plt.title('LR Confusion Matrix')
 plt.xlabel('Predicted')
 plt.ylabel('True')
 
@@ -184,6 +184,16 @@ knn_cm = confusion_matrix(y_test, knn_predictions)
 # Plot confusion matrix for KNN
 plt.figure(figsize=(15, 15))
 sns.heatmap(knn_cm, annot=True, fmt='d', cmap='Blues', xticklabels=knn_model.classes_, yticklabels=knn_model.classes_)
-plt.title('KNN Confusion Matrix')
+plt.title('k-NN Confusion Matrix')
+plt.xlabel('Predicted')
+plt.ylabel('True')
+
+# Confusion matrix of DT
+dt_cm = confusion_matrix(y_test, dt_predictions)
+
+# Plot confusion matrix for DT
+plt.figure(figsize=(15, 15))
+sns.heatmap(dt_cm, annot=True, fmt='d', cmap='Blues', xticklabels=dt_model.classes_, yticklabels=dt_model.classes_)
+plt.title('DT Confusion Matrix')
 plt.xlabel('Predicted')
 plt.ylabel('True')

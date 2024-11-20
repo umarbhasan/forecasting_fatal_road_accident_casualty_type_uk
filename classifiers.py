@@ -100,3 +100,26 @@ dt_predictions = dt_model.predict(X_test)
 # Print accuracy and classification report for DT
 print("Decision Tree Accuracy:", accuracy_score(y_test, dt_predictions))
 print(classification_report(y_test, dt_predictions, zero_division=0))
+
+# Encode the target variable
+le = LabelEncoder()
+y_train_encoded = le.fit_transform(y_train)
+y_test_encoded = le.transform(y_test) 
+
+# Now use y_train_encoded and y_test_encoded in bias_variance_decomp
+
+# --- Logistic Regression ---
+print("Logistic Regression:")
+lr_avg_expected_loss, lr_avg_bias, lr_avg_var = bias_variance_decomp(
+    lr_model, 
+    X_train_scaled, 
+    y_train_encoded, 
+    X_test_scaled, 
+    y_test_encoded, 
+    loss='0-1_loss', 
+    num_rounds=100, 
+    random_seed=40
+)
+print(f'Average expected loss: {lr_avg_expected_loss:.4f}')
+print(f'Average bias: {lr_avg_bias:.4f}')
+print(f'Average variance: {lr_avg_var:.4f}\n')

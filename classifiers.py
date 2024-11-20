@@ -197,3 +197,6 @@ sns.heatmap(dt_cm, annot=True, fmt='d', cmap='Blues', xticklabels=dt_model.class
 plt.title('DT Confusion Matrix')
 plt.xlabel('Predicted')
 plt.ylabel('True')
+
+plt.tight_layout()
+plt.show()

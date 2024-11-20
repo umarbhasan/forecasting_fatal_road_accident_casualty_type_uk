@@ -27,3 +27,6 @@ df_casualties = df_casualties.dropna(subset=['Fatal_Accident_Index'])
 df_casualties['Fatal_Casualty_Age'] = pd.to_numeric(df_casualties['Fatal_Casualty_Age'], errors='coerce')
 df_casualties.dropna(subset=['Fatal_Casualty_Age'], inplace=True)
 df_casualties['Fatal_Casualty_Age'] = df_casualties['Fatal_Casualty_Age'].astype(int)
+
+#Merging the two datasets
+df = pd.merge(df_accidents, df_casualties, on='Fatal_Accident_Index', how='inner')

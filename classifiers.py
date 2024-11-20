@@ -78,3 +78,14 @@ lr_predictions = lr_model.predict(X_test_scaled)
 # Print accuracy and classification report for LR
 print("Logistic Regression Accuracy:", accuracy_score(y_test, lr_predictions))
 print(classification_report(y_test, lr_predictions, zero_division=0))
+
+# Initialize and train KNN classifier
+knn_model = KNeighborsClassifier()  # You can adjust n_neighbors
+knn_model.fit(X_train_scaled, y_train)
+
+# Predictions for KNN
+knn_predictions = knn_model.predict(X_test_scaled)
+
+# Print accuracy and classification report for KNN
+print("KNN Accuracy:", accuracy_score(y_test, knn_predictions))
+print(classification_report(y_test, knn_predictions, zero_division=0))

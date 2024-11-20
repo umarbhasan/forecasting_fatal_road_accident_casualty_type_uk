@@ -30,3 +30,6 @@ df_casualties['Fatal_Casualty_Age'] = df_casualties['Fatal_Casualty_Age'].astype
 
 #Merging the two datasets
 df = pd.merge(df_accidents, df_casualties, on='Fatal_Accident_Index', how='inner')
+
+# One-hot encode the `Month_of_Accident` column
+month_encoded = pd.get_dummies(df['Month_of_Accident'], prefix='Month')

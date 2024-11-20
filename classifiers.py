@@ -58,3 +58,8 @@ X_resampled, y_resampled = smote.fit_resample(X_imputed, y)  # Use X_imputed
 
 # Split data into training and testing sets
 X_train, X_test, y_train, y_test = train_test_split(X_resampled, y_resampled, test_size=0.1, random_state=40, stratify=y_resampled)
+
+# Scale the features
+scaler = StandardScaler()
+X_train_scaled = scaler.fit_transform(X_train)
+X_test_scaled = scaler.transform(X_test)

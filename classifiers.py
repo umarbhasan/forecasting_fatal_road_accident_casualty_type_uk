@@ -36,3 +36,7 @@ month_encoded = pd.get_dummies(df['Month_of_Accident'], prefix='Month')
 
 # Concatenate the encoded month columns with the original DataFrame
 df = pd.concat([df, month_encoded], axis=1)
+
+# Create a binary sex column
+df['Fatal_Casualty_Sex_Binary'] = df['Fatal_Casualty_Sex'].map({'Female': 0, 'Male': 1})
+df = df[df['Fatal_Casualty_Sex'] != 'Not Reported']

@@ -1,5 +1,6 @@
 import pandas as pd
 import numpy as np
+from sklearn.preprocessing import StandardScaler
 from sklearn.model_selection import train_test_split
 from sklearn.impute import SimpleImputer
 from sklearn.linear_model import LogisticRegression
@@ -9,8 +10,6 @@ from sklearn.metrics import accuracy_score, classification_report, confusion_mat
 from sklearn.model_selection import cross_val_score
 from sklearn.preprocessing import LabelEncoder
 from mlxtend.evaluate import bias_variance_decomp
-from sklearn.model_selection import learning_curve
-import scipy.stats as stats
 import matplotlib.pyplot as plt
 import seaborn as sns
 from imblearn.over_sampling import SMOTE

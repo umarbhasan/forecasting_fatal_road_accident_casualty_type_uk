@@ -67,3 +67,14 @@ X_test_scaled = scaler.transform(X_test)
 # Check class distribution
 print("Class distribution in training set after SMOTE:")
 print(pd.Series(y_train).value_counts())
+
+# Initialize Logistic Regression classifier
+lr_model = LogisticRegression(random_state=40, class_weight='balanced', max_iter=1000)
+lr_model.fit(X_train_scaled, y_train)
+
+# Predictions for LR
+lr_predictions = lr_model.predict(X_test_scaled)
+
+# Print accuracy and classification report for LR
+print("Logistic Regression Accuracy:", accuracy_score(y_test, lr_predictions))
+print(classification_report(y_test, lr_predictions, zero_division=0))

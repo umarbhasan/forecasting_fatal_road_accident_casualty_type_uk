@@ -167,3 +167,13 @@ print("KNN CV Score:", knn_cv_scores.mean())
 # Perform cross-validation for Decision Tree
 dt_cv_scores = cross_val_score(dt_model, X_train_scaled, y_train, cv=10)
 print("Decision Tree CV Score:", dt_cv_scores.mean())
+
+# Confusion matrix of LR
+lr_cm = confusion_matrix(y_test, lr_predictions)
+
+# Plot confusion matrix for LR
+plt.figure(figsize=(15, 15))
+sns.heatmap(lr_cm, annot=True, fmt='d', cmap='Blues', xticklabels=lr_model.classes_, yticklabels=lr_model.classes_)
+plt.title('Logistic Regression Confusion Matrix')
+plt.xlabel('Predicted')
+plt.ylabel('True')

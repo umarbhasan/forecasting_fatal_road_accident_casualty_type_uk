@@ -47,3 +47,7 @@ y = df['Fatal_Casualty_Type']
 
 # One-hot encode the `Month_of_Accident` column for X
 X = pd.get_dummies(X, columns=['Month_of_Accident'])
+
+# Impute missing values BEFORE applying SMOTE
+imputer = SimpleImputer(strategy='mean')
+X_imputed = imputer.fit_transform(X)  # Impute missing values in X

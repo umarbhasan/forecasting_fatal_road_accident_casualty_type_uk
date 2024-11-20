@@ -177,3 +177,13 @@ sns.heatmap(lr_cm, annot=True, fmt='d', cmap='Blues', xticklabels=lr_model.class
 plt.title('Logistic Regression Confusion Matrix')
 plt.xlabel('Predicted')
 plt.ylabel('True')
+
+# Confusion matrix of kNN
+knn_cm = confusion_matrix(y_test, knn_predictions)
+
+# Plot confusion matrix for KNN
+plt.figure(figsize=(15, 15))
+sns.heatmap(knn_cm, annot=True, fmt='d', cmap='Blues', xticklabels=knn_model.classes_, yticklabels=knn_model.classes_)
+plt.title('KNN Confusion Matrix')
+plt.xlabel('Predicted')
+plt.ylabel('True')

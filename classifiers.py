@@ -155,3 +155,7 @@ dt_avg_expected_loss, dt_avg_bias, dt_avg_var = bias_variance_decomp(
 print(f'Average expected loss: {dt_avg_expected_loss:.4f}')
 print(f'Average bias: {dt_avg_bias:.4f}')
 print(f'Average variance: {dt_avg_var:.4f}\n')
+
+# Perform cross-validation for Logistic Regression
+lr_cv_scores = cross_val_score(lr_model, X_train_scaled, y_train, cv=10)
+print("Logistic Regression CV Score:", lr_cv_scores.mean())

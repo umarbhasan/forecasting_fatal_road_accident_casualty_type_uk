@@ -55,3 +55,6 @@ X_imputed = imputer.fit_transform(X)  # Impute missing values in X
 # Apply SMOTE to balance the classes in the dataset
 smote = SMOTE(random_state=40, k_neighbors=1)
 X_resampled, y_resampled = smote.fit_resample(X_imputed, y)  # Use X_imputed
+
+# Split data into training and testing sets
+X_train, X_test, y_train, y_test = train_test_split(X_resampled, y_resampled, test_size=0.1, random_state=40, stratify=y_resampled)

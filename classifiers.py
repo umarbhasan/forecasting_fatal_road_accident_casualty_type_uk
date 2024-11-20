@@ -63,3 +63,7 @@ X_train, X_test, y_train, y_test = train_test_split(X_resampled, y_resampled, te
 scaler = StandardScaler()
 X_train_scaled = scaler.fit_transform(X_train)
 X_test_scaled = scaler.transform(X_test)
+
+# Check class distribution
+print("Class distribution in training set after SMOTE:")
+print(pd.Series(y_train).value_counts())

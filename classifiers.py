@@ -92,10 +92,10 @@ print(classification_report(y_test, knn_predictions, zero_division=0))
 
 # Initialize and train Decision Tree classifier
 dt_model = DecisionTreeClassifier(random_state=40, class_weight='balanced')
-dt_model.fit(X_train, y_train)
+dt_model.fit(X_train_scaled, y_train)
 
 #Predictions for DT
-dt_predictions = dt_model.predict(X_test)
+dt_predictions = dt_model.predict(X_test_scaled)
 
 # Print accuracy and classification report for DT
 print("Decision Tree Accuracy:", accuracy_score(y_test, dt_predictions))
@@ -128,10 +128,10 @@ print(f'Average variance: {lr_avg_var:.4f}\n')
 print("KNN:")
 knn_avg_expected_loss, knn_avg_bias, knn_avg_var = bias_variance_decomp(
     knn_model,
-    X_train, 
+    X_train_scaled, 
     y_train_encoded, 
-    X_test, 
-    y_test_encoded,
+    X_test_scaled, 
+    y_test_encoded, 
     loss='0-1_loss',
     num_rounds=100,
     random_seed=40
@@ -144,10 +144,10 @@ print(f'Average variance: {knn_avg_var:.4f}\n')
 print("Decision Tree:")
 dt_avg_expected_loss, dt_avg_bias, dt_avg_var = bias_variance_decomp(
     dt_model,
-    X_train, 
+    X_train_scaled, 
     y_train_encoded, 
-    X_test, 
-    y_test_encoded,
+    X_test_scaled, 
+    y_test_encoded, 
     loss='0-1_loss',
     num_rounds=100,
     random_seed=40
@@ -161,9 +161,9 @@ lr_cv_scores = cross_val_score(lr_model, X_train_scaled, y_train, cv=10)
 print("Logistic Regression CV Score:", lr_cv_scores.mean())
 
 # Perform cross-validation for KNN
-knn_cv_scores = cross_val_score(knn_model, X_train, y_train, cv=10)
+knn_cv_scores = cross_val_score(knn_model, X_train_scaled, y_train, cv=10)
 print("KNN CV Score:", knn_cv_scores.mean())
 
 # Perform cross-validation for Decision Tree
-dt_cv_scores = cross_val_score(dt_model, X_train, y_train, cv=10)
+dt_cv_scores = cross_val_score(dt_model, X_train_scaled, y_train, cv=10)
 print("Decision Tree CV Score:", dt_cv_scores.mean())

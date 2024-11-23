@@ -4,10 +4,8 @@ from sklearn.preprocessing import StandardScaler
 from sklearn.model_selection import train_test_split
 from sklearn.impute import SimpleImputer
 from sklearn.linear_model import LogisticRegression
-from sklearn.svm import SVC
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.tree import DecisionTreeClassifier
-from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import accuracy_score, classification_report, confusion_matrix
 from sklearn.model_selection import cross_val_score
 from sklearn.preprocessing import LabelEncoder
@@ -42,8 +40,6 @@ df = pd.concat([df, month_encoded], axis=1)
 df['Fatal_Casualty_Sex_Binary'] = df['Fatal_Casualty_Sex'].map({'Female': 0, 'Male': 1})
 df = df[df['Fatal_Casualty_Sex'] != 'Not Reported']
 
-df.dropna(subset=['Fatal_Casualty_Sex_Binary'], inplace=True)
-
 # Select features and target variable
 X = df[['Month_of_Accident', 'Hour_of_Accident', 'Longitude', 'Latitude', 'Pedestrian_Casualties', 'Pedal_Cycles', 'Motor_Cycles', 'Cars', 'Buses_or_Coaches', 'Vans', 'HGVs', 'Other_Vehicles', 'Total_Vehicles_Involved', 'Fatal_Casualties', 'Serious_Casualties', 'Slight_Casualties', 'Total_Number_of_Casualties', 'Fatal_Casualty_Sex_Binary', 'Fatal_Casualty_Age']]
 y = df['Fatal_Casualty_Type']
@@ -71,8 +67,19 @@ X_test_scaled = scaler.transform(X_test)
 print("Class distribution in training set after SMOTE:")
 print(pd.Series(y_train).value_counts())
 
+# Initialize Logistic Regression classifier
+lr_model = LogisticRegression(random_state=40, class_weight='balanced', max_iter=1000)
+lr_model.fit(X_train_scaled, y_train)
+
+# Predictions for LR
+lr_predictions = lr_model.predict(X_test_scaled)
+
+# Print accuracy and classification report for LR
+print("Logistic Regression Accuracy:", accuracy_score(y_test, lr_predictions))
+print(classification_report(y_test, lr_predictions, zero_division=0))
+
 # Initialize and train KNN classifier
-knn_model = KNeighborsClassifier(3)  # You can adjust n_neighbors
+knn_model = KNeighborsClassifier()  # You can adjust n_neighbors
 knn_model.fit(X_train_scaled, y_train)
 
 # Predictions for KNN
@@ -92,28 +99,6 @@ dt_predictions = dt_model.predict(X_test_scaled)
 # Print accuracy and classification report for DT
 print("Decision Tree Accuracy:", accuracy_score(y_test, dt_predictions))
 print(classification_report(y_test, dt_predictions, zero_division=0))
-
-# Initialize and train Random Forest classifiers
-rf_model = RandomForestClassifier(random_state=40, class_weight='balanced')
-rf_model.fit(X_train_scaled, y_train)
-
-rf_predictions = rf_model.predict(X_test_scaled)
-
-print("Random Forest Accuracy:", accuracy_score(y_test, rf_predictions))
-print(classification_report(y_test, rf_predictions, zero_division=0))
-
-# Create an SVM classifier
-svm_model = SVC(kernel='rbf', C=1.0, gamma='scale', probability=True, random_state=40)  # Use radial basis function kernel
-
-# Train the SVM model
-svm_model.fit(X_train_scaled, y_train)
-
-# Make predictions
-svm_predictions = svm_model.predict(X_test_scaled)
-
-# Evaluate performance
-print("SVM Accuracy:", accuracy_score(y_test, svm_predictions))
-print(classification_report(y_test, svm_predictions, zero_division=0))
 
 # Encode the target variable
 le = LabelEncoder()

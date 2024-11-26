@@ -401,6 +401,7 @@ plt.ylim([0, 1])  # Set y-axis limits for better comparison
 plt.show()
 
 #---Bias-Variance Decomposition---
+
 # Encode the target variable
 le = LabelEncoder()
 y_train_encoded = le.fit_transform(y_train)
@@ -474,7 +475,7 @@ print(f'Average variance: {rf_avg_var:.4f}\n')
 # Bar plot of Bias-Variance Decomposition
 loss_values = [lr_avg_expected_loss, knn_avg_expected_loss, dt_avg_expected_loss, rf_avg_expected_loss]
 bias_values = [lr_avg_bias, knn_avg_bias, dt_avg_bias, rf_avg_bias]
-variance_values = [lr_avg_variance, knn_avg_variance, dt_avg_variance, rf_avg_variance]
+variance_values = [lr_avg_var, knn_avg_var, dt_avg_var, rf_avg_var]
 
 
 # You can use a grouped bar chart or separate bar charts for bias and variance
@@ -484,7 +485,7 @@ bar_width = 0.30
 index = np.arange(len(models))
 
 plt.figure(figsize=(10, 6))
-plt.bar(index, error_values, bar_width, label='Average Expected Loss')
+plt.bar(index, loss_values, bar_width, label='Average Expected Loss')
 plt.bar(index+ bar_width, bias_values, bar_width, label='Average Bias')
 plt.bar(index + bar_width + bar_width, variance_values, bar_width, label='Average Variance')
 plt.xticks(index + bar_width + bar_width / 50, models)

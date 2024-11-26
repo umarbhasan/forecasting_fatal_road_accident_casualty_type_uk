@@ -297,8 +297,7 @@ plt.ylabel('CV Score')
 plt.ylim([0, 1])  # Set y-axis limits for better comparison
 plt.show()
 
-#ROC Curve
-
+#---ROC Curves---
 from sklearn.preprocessing import label_binarize
 from sklearn.multiclass import OneVsRestClassifier
 from sklearn.metrics import roc_curve, auc
@@ -368,6 +367,27 @@ plt.ylabel('True Positive Rate')
 plt.title('ROC Curve Comparison (Micro-Average)')
 plt.legend(loc="lower right")
 plt.show()
+
+# --- ROC AUC Scores ---
+# --- Logistic Regression ---
+lr_probs = lr_model.predict_proba(X_test_scaled)
+lr_auc = roc_auc_score(y_test, lr_probs, multi_class='ovr')  # Use 'ovr' for multi-class
+print(f"Logistic Regression ROC AUC: {lr_auc:.4f}")
+
+# --- k-NN ---
+knn_probs = knn_model.predict_proba(X_test_scaled)
+knn_auc = roc_auc_score(y_test, knn_probs, multi_class='ovr')
+print(f"k-NN ROC AUC: {knn_auc:.4f}")
+
+# --- Decision Tree ---
+dt_probs = dt_model.predict_proba(X_test_scaled)
+dt_auc = roc_auc_score(y_test, dt_probs, multi_class='ovr')
+print(f"Decision Tree ROC AUC: {dt_auc:.4f}")
+
+# --- Random Forest ---
+rf_probs = rf_model.predict_proba(X_test_scaled)
+rf_auc = roc_auc_score(y_test, rf_probs, multi_class='ovr')
+print(f"Random Forest ROC AUC: {rf_auc:.4f}")
 
 # Encode the target variable
 le = LabelEncoder()

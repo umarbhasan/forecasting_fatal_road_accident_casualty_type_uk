@@ -297,6 +297,78 @@ plt.ylabel('CV Score')
 plt.ylim([0, 1])  # Set y-axis limits for better comparison
 plt.show()
 
+#ROC Curve
+
+from sklearn.preprocessing import label_binarize
+from sklearn.multiclass import OneVsRestClassifier
+from sklearn.metrics import roc_curve, auc
+
+# Binarize the target variable
+y_test_bin = label_binarize(y_test, classes=np.unique(y_test))
+n_classes = y_test_bin.shape[1]
+
+# Create OneVsRestClassifier for each model
+lr_ovr = OneVsRestClassifier(lr_model)
+knn_ovr = OneVsRestClassifier(knn_model)
+dt_ovr = OneVsRestClassifier(dt_model)
+rf_ovr = OneVsRestClassifier(rf_model)
+
+# Fit the classifiers
+lr_ovr.fit(X_train_scaled, y_train)
+knn_ovr.fit(X_train_scaled, y_train)
+dt_ovr.fit(X_train_scaled, y_train)
+rf_ovr.fit(X_train_scaled, y_train)
+
+# Get predicted probabilities for each class
+lr_probs = lr_ovr.predict_proba(X_test_scaled)
+knn_probs = knn_ovr.predict_proba(X_test_scaled)
+dt_probs = dt_ovr.predict_proba(X_test_scaled)
+rf_probs = rf_ovr.predict_proba(X_test_scaled)
+
+# --- Plot ROC curves for each model ---
+
+models = {
+    "Logistic Regression": lr_probs,
+    "k-NN": knn_probs,
+    "Decision Tree": dt_probs,
+    "Random Forest": rf_probs
+}
+
+plt.figure(figsize=(10, 8))
+
+for model_name, model_probs in models.items():
+    # Check for NaN values and impute if necessary
+    if np.isnan(model_probs).any():
+        print(f"Warning: NaN values found in {model_name} predictions. Imputing with mean.")
+        imputer = SimpleImputer(strategy='mean')
+        model_probs = imputer.fit_transform(model_probs)
+
+    # Compute ROC curve and ROC area for each class
+    fpr = dict()
+    tpr = dict()
+    roc_auc = dict()
+
+    for i in range(n_classes):
+        fpr[i], tpr[i], _ = roc_curve(y_test_bin[:, i], model_probs[:, i])
+        roc_auc[i] = auc(fpr[i], tpr[i])
+
+    # Aggregate ROC metrics for micro-average
+    fpr["micro"], tpr["micro"], _ = roc_curve(y_test_bin.ravel(), model_probs.ravel())
+    roc_auc["micro"] = auc(fpr["micro"], tpr["micro"])
+
+    # Plot micro-average ROC curve
+    plt.plot(fpr["micro"], tpr["micro"],
+             label=f'{model_name} (micro-average AUC = {roc_auc["micro"]:0.2f})')
+
+plt.plot([0, 1], [0, 1], 'k--')
+plt.xlim([0.0, 1.0])
+plt.ylim([0.0, 1.05])
+plt.xlabel('False Positive Rate')
+plt.ylabel('True Positive Rate')
+plt.title('ROC Curve Comparison (Micro-Average)')
+plt.legend(loc="lower right")
+plt.show()
+
 # Encode the target variable
 le = LabelEncoder()
 y_train_encoded = le.fit_transform(y_train)

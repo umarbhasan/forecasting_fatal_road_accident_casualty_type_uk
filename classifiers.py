@@ -14,12 +14,13 @@ from mlxtend.evaluate import bias_variance_decomp
 import matplotlib.pyplot as plt
 import seaborn as sns
 from imblearn.over_sampling import SMOTE
+from sklearn.metrics import roc_auc_score
 
 # Load the datasets
 df_accidents = pd.read_csv('C:/Users/umarb/OneDrive/Documents/BS in CSE/3rd Year/1st Semester/CSE445/fatalaccidentdata.csv')
 df_casualties = pd.read_csv('C:/Users/umarb/OneDrive/Documents/BS in CSE/3rd Year/1st Semester/CSE445/fatalcasualtydata.csv')
 
-# Dropping rows with missing values in critical columns
+# Dropping rows with missing values in Index column
 df_accidents = df_accidents.dropna(subset=['Fatal_Accident_Index'])
 df_casualties = df_casualties.dropna(subset=['Fatal_Accident_Index'])
 
@@ -58,7 +59,7 @@ X_imputed = imputer.fit_transform(X)  # Impute missing values in X
 smote = SMOTE(random_state=40, k_neighbors=1)
 X_resampled, y_resampled = smote.fit_resample(X_imputed, y)  # Use X_imputed
 
-# Split data into training and testing sets
+# Split data into training (90%) and testing (10%) sets
 X_train, X_test, y_train, y_test = train_test_split(X_resampled, y_resampled, test_size=0.1, random_state=40, stratify=y_resampled)
 
 # Scale the features
@@ -67,8 +68,16 @@ X_train_scaled = scaler.fit_transform(X_train)
 X_test_scaled = scaler.transform(X_test)
 
 # Check class distribution
+print("Class distribution in dataset after SMOTE:")
+print(pd.Series(y_resampled).value_counts())
+
+# Check class distribution
 print("Class distribution in training set after SMOTE:")
 print(pd.Series(y_train).value_counts())
+
+# Check class distribution
+print("Class distribution in testing set after SMOTE:")
+print(pd.Series(y_test).value_counts())
 
 # Initialize Logistic Regression classifier
 lr_model = LogisticRegression(random_state=40, class_weight='balanced', max_iter=1000)

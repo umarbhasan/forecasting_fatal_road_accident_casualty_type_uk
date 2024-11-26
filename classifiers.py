@@ -287,6 +287,16 @@ print("Decision Tree Classifier CV Score:", dt_cv_scores.mean())
 rf_cv_scores = cross_val_score(rf_model, X_train_scaled, y_train, cv=10)
 print("Random Forest Classifier CV Score:", rf_cv_scores.mean())
 
+# Bar plot of Cross-Validation Scores
+cv_scores = [lr_cv_scores.mean(), knn_cv_scores.mean(), dt_cv_scores.mean(), rf_cv_scores.mean()]
+
+plt.figure(figsize=(8, 6))
+plt.bar(models, cv_scores)
+plt.title('Cross-Validation Score Comparison')
+plt.ylabel('CV Score')
+plt.ylim([0, 1])  # Set y-axis limits for better comparison
+plt.show()
+
 # Encode the target variable
 le = LabelEncoder()
 y_train_encoded = le.fit_transform(y_train)

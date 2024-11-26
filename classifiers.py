@@ -400,6 +400,7 @@ plt.ylabel('ROC-AUC')
 plt.ylim([0, 1])  # Set y-axis limits for better comparison
 plt.show()
 
+#---Bias-Variance Decomposition---
 # Encode the target variable
 le = LabelEncoder()
 y_train_encoded = le.fit_transform(y_train)

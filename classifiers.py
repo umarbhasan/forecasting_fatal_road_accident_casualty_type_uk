@@ -102,6 +102,15 @@ plt.xticks(rotation=45, ha='right')
 plt.tight_layout()
 plt.show()
 
+# Correlation Matrix
+# Select only numeric columns for correlation analysis
+numeric_df = df.select_dtypes(include=[np.number])
+
+plt.figure(figsize=(12, 8))
+sns.heatmap(numeric_df.corr(), annot=True, cmap='coolwarm', fmt=".2f")
+plt.title('Correlation Matrix of Numeric Columns with Fatal Casualty Type')
+plt.show()
+
 # Initialize Logistic Regression classifier
 lr_model = LogisticRegression(random_state=40, class_weight='balanced', max_iter=1000)
 lr_model.fit(X_train_scaled, y_train)

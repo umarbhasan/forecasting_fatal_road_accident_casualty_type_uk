@@ -186,6 +186,22 @@ plt.xticks(range(X_train_scaled.shape[1]), X.columns[knn_indices], rotation=45, 
 plt.tight_layout()
 plt.show()
 
+# Print accuracy and classification report for LR
+print("Logistic Regression Classifier Accuracy:", accuracy_score(y_test, lr_predictions))
+print(classification_report(y_test, lr_predictions, zero_division=0))
+
+# Print accuracy and classification report for KNN
+print("k-NN Classifier Accuracy:", accuracy_score(y_test, knn_predictions))
+print(classification_report(y_test, knn_predictions, zero_division=0))
+
+# Print accuracy and classification report for DT
+print("Decision Tree Classifier Accuracy:", accuracy_score(y_test, dt_predictions))
+print(classification_report(y_test, dt_predictions, zero_division=0))
+
+# Print accuracy and classification report for RF
+print("Random Forest Classifier Accuracy:", accuracy_score(y_test, rf_predictions))
+print(classification_report(y_test, rf_predictions, zero_division=0))
+
 # Encode the target variable
 le = LabelEncoder()
 y_train_encoded = le.fit_transform(y_train)

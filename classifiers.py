@@ -139,6 +139,53 @@ rf_model.fit(X_train_scaled, y_train)
 #Predictions for RF
 rf_predictions = rf_model.predict(X_test_scaled)
 
+# Feature Importance
+# --- Logistic Regression ---
+# Note: Feature importance for Logistic Regression is different
+# We'll use coefficients as a proxy for importance
+lr_importances = np.abs(lr_model.coef_[0])  # Take absolute values of coefficients
+lr_indices = np.argsort(lr_importances)[::-1]
+plt.figure(figsize=(10, 8))
+plt.title("Feature Importance (Logistic Regression)")
+plt.bar(range(X_train_scaled.shape[1]), lr_importances[lr_indices], align="center")
+plt.xticks(range(X_train_scaled.shape[1]), X.columns[lr_indices], rotation=45, ha='right')
+plt.tight_layout()
+plt.show()
+
+# --- Decision Tree ---
+dt_importances = dt_model.feature_importances_
+dt_indices = np.argsort(dt_importances)[::-1]
+plt.figure(figsize=(10, 8))
+plt.title("Feature Importance (Decision Tree)")
+plt.bar(range(X_train_scaled.shape[1]), dt_importances[dt_indices], align="center")
+plt.xticks(range(X_train_scaled.shape[1]), X.columns[dt_indices], rotation=45, ha='right')
+plt.tight_layout()
+plt.show()
+
+# --- Random Forest ---
+rf_importances = rf_model.feature_importances_
+rf_indices = np.argsort(rf_importances)[::-1]
+plt.figure(figsize=(10, 8))
+plt.title("Feature Importance (Random Forest)")
+plt.bar(range(X_train_scaled.shape[1]), rf_importances[rf_indices], align="center")
+plt.xticks(range(X_train_scaled.shape[1]), X.columns[rf_indices], rotation=45, ha='right')
+plt.tight_layout()
+plt.show()
+
+# --- k-NN ---
+# Note: k-NN doesn't have a direct feature importance measure
+# We can use permutation importance as a workaround
+from sklearn.inspection import permutation_importance
+knn_result = permutation_importance(knn_model, X_train_scaled, y_train, n_repeats=10, random_state=40)
+knn_importances = knn_result.importances_mean
+knn_indices = np.argsort(knn_importances)[::-1]
+plt.figure(figsize=(10, 8))
+plt.title("Feature Importance (k-NN)")
+plt.bar(range(X_train_scaled.shape[1]), knn_importances[knn_indices], align="center")
+plt.xticks(range(X_train_scaled.shape[1]), X.columns[knn_indices], rotation=45, ha='right')
+plt.tight_layout()
+plt.show()
+
 # Encode the target variable
 le = LabelEncoder()
 y_train_encoded = le.fit_transform(y_train)

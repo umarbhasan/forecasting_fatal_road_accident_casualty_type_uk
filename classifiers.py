@@ -258,6 +258,22 @@ plt.ylabel('True')
 plt.tight_layout()
 plt.show()
 
+# Bar plot of Correct:Incorrect ratios of the Confusion Matrices
+classifiers = ['Logistic Regression', 'k-NN', 'Decision Tree', 'Random Forest']
+ratios = [10.67, 21.02, 20.39, 24.85]
+
+# Create the bar plot
+plt.figure(figsize=(10, 6)) 
+plt.bar(classifiers, ratios)
+
+# Add labels and title
+plt.xlabel('Classifier')
+plt.ylabel('Ratio of Correct to Incorrect Classifications')
+plt.title('Classifier Performance based on Confusion Matrices')
+
+# Show the plot
+plt.show()
+
 # Encode the target variable
 le = LabelEncoder()
 y_train_encoded = le.fit_transform(y_train)

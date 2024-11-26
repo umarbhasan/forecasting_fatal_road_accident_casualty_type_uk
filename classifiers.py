@@ -79,6 +79,29 @@ print(pd.Series(y_train).value_counts())
 print("Class distribution in testing set after SMOTE:")
 print(pd.Series(y_test).value_counts())
 
+# Get the target class distribution
+casualty_counts = df['Fatal_Casualty_Type'].value_counts()
+
+# Plotting before SMOTE
+plt.figure(figsize=(10, 6))
+sns.countplot(x=y)
+plt.title('Target Class Distribution before SMOTE')
+plt.xlabel('Fatal Casualty Type')
+plt.ylabel('Frequency')
+plt.xticks(rotation=45, ha='right')
+plt.tight_layout()
+plt.show()
+
+# Plotting after SMOTE
+plt.figure(figsize=(10, 6))
+sns.countplot(x=y_resampled)
+plt.title('Target Class Distribution after SMOTE')
+plt.xlabel('Fatal Casualty Type')
+plt.ylabel('Frequency')
+plt.xticks(rotation=45, ha='right')
+plt.tight_layout()
+plt.show()
+
 # Initialize Logistic Regression classifier
 lr_model = LogisticRegression(random_state=40, class_weight='balanced', max_iter=1000)
 lr_model.fit(X_train_scaled, y_train)

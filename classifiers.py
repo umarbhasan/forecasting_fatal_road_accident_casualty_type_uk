@@ -407,7 +407,6 @@ y_train_encoded = le.fit_transform(y_train)
 y_test_encoded = le.transform(y_test) 
 
 # Now use y_train_encoded and y_test_encoded in bias_variance_decomp
-
 # --- Logistic Regression ---
 print("Logistic Regression:")
 lr_avg_expected_loss, lr_avg_bias, lr_avg_var = bias_variance_decomp(

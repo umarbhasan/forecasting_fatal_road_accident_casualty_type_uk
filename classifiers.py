@@ -202,6 +202,19 @@ print(classification_report(y_test, dt_predictions, zero_division=0))
 print("Random Forest Classifier Accuracy:", accuracy_score(y_test, rf_predictions))
 print(classification_report(y_test, rf_predictions, zero_division=0))
 
+models = ['Logistic Regression', 'k-NN', 'Decision Tree', 'Random Forest']
+accuracies = [accuracy_score(y_test, lr_predictions), 
+              accuracy_score(y_test, knn_predictions), 
+              accuracy_score(y_test, dt_predictions),
+              accuracy_score(y_test, rf_predictions)]
+
+plt.figure(figsize=(8, 6))
+plt.bar(models, accuracies)
+plt.title('Model Accuracy Comparison')
+plt.ylabel('Accuracy')
+plt.ylim([0, 1])  # Set y-axis limits for better comparison
+plt.show()
+
 # Encode the target variable
 le = LabelEncoder()
 y_train_encoded = le.fit_transform(y_train)

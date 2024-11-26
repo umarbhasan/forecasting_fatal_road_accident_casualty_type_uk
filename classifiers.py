@@ -389,6 +389,17 @@ rf_probs = rf_model.predict_proba(X_test_scaled)
 rf_auc = roc_auc_score(y_test, rf_probs, multi_class='ovr')
 print(f"Random Forest ROC AUC: {rf_auc:.4f}")
 
+# Bar plot of ROC-AUC scores
+models = ['Logistic Regression', 'k-NN', 'Decision Tree', 'Random Forest']
+auc_scores = [lr_auc, knn_auc, dt_auc, rf_auc]
+
+plt.figure(figsize=(8, 6))
+plt.bar(models, auc_scores)
+plt.title('ROC-AUC Comparison')
+plt.ylabel('ROC-AUC')
+plt.ylim([0, 1])  # Set y-axis limits for better comparison
+plt.show()
+
 # Encode the target variable
 le = LabelEncoder()
 y_train_encoded = le.fit_transform(y_train)

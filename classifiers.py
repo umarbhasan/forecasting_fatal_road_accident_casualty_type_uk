@@ -112,26 +112,18 @@ plt.title('Correlation Matrix of Numeric Columns with Fatal Casualty Type')
 plt.show()
 
 # Initialize Logistic Regression classifier
-lr_model = LogisticRegression(random_state=40, class_weight='balanced', max_iter=1000)
+lr_model = LogisticRegression(random_state=40, class_weight='balanced', max_iter=1000, solver='newton-cg')
 lr_model.fit(X_train_scaled, y_train)
 
 # Predictions for LR
 lr_predictions = lr_model.predict(X_test_scaled)
 
-# Print accuracy and classification report for LR
-print("Logistic Regression Accuracy:", accuracy_score(y_test, lr_predictions))
-print(classification_report(y_test, lr_predictions, zero_division=0))
-
 # Initialize and train KNN classifier
-knn_model = KNeighborsClassifier()  # You can adjust n_neighbors
+knn_model = KNeighborsClassifier(3)  # You can adjust n_neighbors
 knn_model.fit(X_train_scaled, y_train)
 
 # Predictions for KNN
 knn_predictions = knn_model.predict(X_test_scaled)
-
-# Print accuracy and classification report for KNN
-print("k-NN Accuracy:", accuracy_score(y_test, knn_predictions))
-print(classification_report(y_test, knn_predictions, zero_division=0))
 
 # Initialize and train Decision Tree classifier
 dt_model = DecisionTreeClassifier(random_state=40, class_weight='balanced')
@@ -140,9 +132,12 @@ dt_model.fit(X_train_scaled, y_train)
 #Predictions for DT
 dt_predictions = dt_model.predict(X_test_scaled)
 
-# Print accuracy and classification report for DT
-print("Decision Tree Accuracy:", accuracy_score(y_test, dt_predictions))
-print(classification_report(y_test, dt_predictions, zero_division=0))
+# Initialize and train Random Forest classifiers
+rf_model = RandomForestClassifier(random_state=40, class_weight='balanced')
+rf_model.fit(X_train_scaled, y_train)
+
+#Predictions for RF
+rf_predictions = rf_model.predict(X_test_scaled)
 
 # Encode the target variable
 le = LabelEncoder()

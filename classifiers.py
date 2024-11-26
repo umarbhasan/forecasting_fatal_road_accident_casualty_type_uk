@@ -471,47 +471,24 @@ print(f'Average expected loss: {rf_avg_expected_loss:.4f}')
 print(f'Average bias: {rf_avg_bias:.4f}')
 print(f'Average variance: {rf_avg_var:.4f}\n')
 
-# Perform cross-validation for Logistic Regression
-lr_cv_scores = cross_val_score(lr_model, X_train_scaled, y_train, cv=10)
-print("Logistic Regression CV Score:", lr_cv_scores.mean())
+# Bar plot of Bias-Variance Decomposition
+loss_values = [lr_avg_expected_loss, knn_avg_expected_loss, dt_avg_expected_loss, rf_avg_expected_loss]
+bias_values = [lr_avg_bias, knn_avg_bias, dt_avg_bias, rf_avg_bias]
+variance_values = [lr_avg_variance, knn_avg_variance, dt_avg_variance, rf_avg_variance]
 
-# Perform cross-validation for KNN
-knn_cv_scores = cross_val_score(knn_model, X_train_scaled, y_train, cv=10)
-print("k-NN CV Score:", knn_cv_scores.mean())
 
-# Perform cross-validation for Decision Tree
-dt_cv_scores = cross_val_score(dt_model, X_train_scaled, y_train, cv=10)
-print("Decision Tree CV Score:", dt_cv_scores.mean())
+# You can use a grouped bar chart or separate bar charts for bias and variance
 
-# Confusion matrix of LR
-lr_cm = confusion_matrix(y_test, lr_predictions)
+# Example for grouped bar chart:
+bar_width = 0.30
+index = np.arange(len(models))
 
-# Plot confusion matrix for LR
-plt.figure(figsize=(15, 15))
-sns.heatmap(lr_cm, annot=True, fmt='d', cmap='Blues', xticklabels=lr_model.classes_, yticklabels=lr_model.classes_)
-plt.title('LR Confusion Matrix')
-plt.xlabel('Predicted')
-plt.ylabel('True')
-
-# Confusion matrix of kNN
-knn_cm = confusion_matrix(y_test, knn_predictions)
-
-# Plot confusion matrix for KNN
-plt.figure(figsize=(15, 15))
-sns.heatmap(knn_cm, annot=True, fmt='d', cmap='Blues', xticklabels=knn_model.classes_, yticklabels=knn_model.classes_)
-plt.title('k-NN Confusion Matrix')
-plt.xlabel('Predicted')
-plt.ylabel('True')
-
-# Confusion matrix of DT
-dt_cm = confusion_matrix(y_test, dt_predictions)
-
-# Plot confusion matrix for DT
-plt.figure(figsize=(15, 15))
-sns.heatmap(dt_cm, annot=True, fmt='d', cmap='Blues', xticklabels=dt_model.classes_, yticklabels=dt_model.classes_)
-plt.title('DT Confusion Matrix')
-plt.xlabel('Predicted')
-plt.ylabel('True')
-
-plt.tight_layout()
+plt.figure(figsize=(10, 6))
+plt.bar(index, error_values, bar_width, label='Average Expected Loss')
+plt.bar(index+ bar_width, bias_values, bar_width, label='Average Bias')
+plt.bar(index + bar_width + bar_width, variance_values, bar_width, label='Average Variance')
+plt.xticks(index + bar_width + bar_width / 50, models)
+plt.title('Average Expected Loss, Average Bias, and Average Variance Comparison')
+plt.ylabel('Error')
+plt.legend()
 plt.show()

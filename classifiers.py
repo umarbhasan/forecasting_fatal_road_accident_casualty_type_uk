@@ -344,3 +344,28 @@ plt.ylabel('Accuracy')
 plt.xticks(rotation=45)
 plt.tight_layout()
 plt.show()
+
+#----------AFTER SMOTE------------
+# Apply SMOTE to balance the classes in the dataset
+smote = SMOTE(random_state=40, k_neighbors=1)
+X_resampled, y_resampled = smote.fit_resample(X_imputed, y)  # Use X_imputed
+
+# Split data into training (90%) and testing (10%) sets
+X_train, X_test, y_train, y_test = train_test_split(X_resampled, y_resampled, test_size=0.1, random_state=40, stratify=y_resampled)
+
+# Scale the features
+scaler = StandardScaler()
+X_train_scaled = scaler.fit_transform(X_train)
+X_test_scaled = scaler.transform(X_test)
+
+# Check class distribution
+print("Class distribution in dataset after SMOTE:")
+print(pd.Series(y_resampled).value_counts())
+
+# Check class distribution
+print("Class distribution in training set after SMOTE:")
+print(pd.Series(y_train).value_counts())
+
+# Check class distribution
+print("Class distribution in testing set after SMOTE:")
+print(pd.Series(y_test).value_counts())

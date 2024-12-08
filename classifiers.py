@@ -261,3 +261,57 @@ plt.title('Model Accuracy Comparison Before SMOTE')
 plt.ylabel('Accuracy')
 plt.ylim([0, 1])  # Set y-axis limits for better comparison
 plt.show()
+
+#--Confusion Matrices before SMOTE--
+# Confusion matrix of LR
+lr_cm = confusion_matrix(y_test, lr_predictions)
+
+# Plot confusion matrix for LR
+plt.figure(figsize=(12, 8))
+sns.heatmap(lr_cm, annot=True, fmt='d', cmap='Blues', xticklabels=lr_model.classes_, yticklabels=lr_model.classes_)
+plt.title('Logistic Regression Classifier Confusion Matrix')
+plt.xlabel('Predicted')
+plt.ylabel('True')
+
+# Confusion matrix of kNN
+knn_cm = confusion_matrix(y_test, knn_predictions)
+
+# Plot confusion matrix for KNN
+plt.figure(figsize=(12, 8))
+sns.heatmap(knn_cm, annot=True, fmt='d', cmap='Blues', xticklabels=knn_model.classes_, yticklabels=knn_model.classes_)
+plt.title('k-NN Classifier Confusion Matrix')
+plt.xlabel('Predicted')
+plt.ylabel('True')
+
+# Confusion matrix of DT
+dt_cm = confusion_matrix(y_test, dt_predictions)
+
+# Plot confusion matrix for DT
+plt.figure(figsize=(12, 8))
+sns.heatmap(dt_cm, annot=True, fmt='d', cmap='Blues', xticklabels=dt_model.classes_, yticklabels=dt_model.classes_)
+plt.title('Decision Tree Classifier Confusion Matrix')
+plt.xlabel('Predicted')
+plt.ylabel('True')
+
+# Confusion matrix of RF
+rf_cm = confusion_matrix(y_test, rf_predictions)
+
+# Plot confusion matrix for RF
+plt.figure(figsize=(12, 8))
+sns.heatmap(rf_cm, annot=True, fmt='d', cmap='Blues', xticklabels=rf_model.classes_, yticklabels=rf_model.classes_)
+plt.title('Random Forest Classifier Confusion Matrix')
+plt.xlabel('Predicted')
+plt.ylabel('True')
+
+# Confusion matrix for SVM (RBF)
+svm_cm = confusion_matrix(y_test, svm_predictions)
+
+# Plot confusion matrix for SVM (RBF)
+plt.figure(figsize=(12, 8))
+sns.heatmap(svm_cm, annot=True, fmt='d', cmap='Blues', xticklabels=svm_model.classes_, yticklabels=svm_model.classes_) 
+plt.title('SVM (RBF) Classifier Confusion Matrix')
+plt.xlabel('Predicted')
+plt.ylabel('True')
+
+plt.tight_layout()
+plt.show()

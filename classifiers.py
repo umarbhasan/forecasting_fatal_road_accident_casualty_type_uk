@@ -83,3 +83,16 @@ print(pd.Series(y_train).value_counts())
 # Check class distribution
 print("Class distribution in testing set before SMOTE:")
 print(pd.Series(y_test).value_counts())
+
+# Get the frequency of each casualty type
+casualty_counts = df['Fatal_Casualty_Type'].value_counts()
+
+# Plotting
+plt.figure(figsize=(10, 6))
+sns.countplot(x=y)
+plt.title('Target Class Distribution before SMOTE')
+plt.xlabel('Fatal Casualty Type')
+plt.ylabel('Frequency')
+plt.xticks(rotation=45, ha='right')
+plt.tight_layout()
+plt.show()

@@ -838,3 +838,100 @@ plt.show()
 le = LabelEncoder()
 y_train_encoded = le.fit_transform(y_train)
 y_test_encoded = le.transform(y_test)
+
+# --- Logistic Regression ---
+print("Logistic Regression:")
+
+# Perform bias-variance decomposition for the Logistic Regression model
+# `bias_variance_decomp`: This function estimates the bias and variance of a model.
+# `lr_model`: The trained Logistic Regression model.
+# `X_train_scaled`: The scaled training data.
+# `y_train_encoded`: The encoded training labels.
+# `X_test_scaled`: The scaled test data.
+# `y_test_encoded`: The encoded test labels.
+# `loss='0-1_loss'`: Specifies the 0-1 loss function (classification error) for the calculation.
+# `num_rounds=100`:  The number of times the model will be re-trained and evaluated to estimate bias and variance. 
+#                    Higher values generally give more stable estimates but increase computation time.
+# `random_seed=40`:  A seed for the random number generator to ensure reproducibility of the results.
+lr_avg_expected_loss, lr_avg_bias, lr_avg_var = bias_variance_decomp(
+    lr_model, 
+    X_train_scaled, 
+    y_train_encoded, 
+    X_test_scaled, 
+    y_test_encoded, 
+    loss='0-1_loss', 
+    num_rounds=100, 
+    random_seed=40
+)
+
+# Print the results of the bias-variance decomposition
+print(f'Average expected loss: {lr_avg_expected_loss:.4f}')
+print(f'Average bias: {lr_avg_bias:.4f}')
+print(f'Average variance: {lr_avg_var:.4f}\n')
+
+# --- KNN ---
+print("k-NN:")
+knn_avg_expected_loss, knn_avg_bias, knn_avg_var = bias_variance_decomp(
+    knn_model,
+    X_train_scaled, 
+    y_train_encoded, 
+    X_test_scaled, 
+    y_test_encoded, 
+    loss='0-1_loss',
+    num_rounds=100,
+    random_seed=40
+)
+print(f'Average expected loss: {knn_avg_expected_loss:.4f}')
+print(f'Average bias: {knn_avg_bias:.4f}')
+print(f'Average variance: {knn_avg_var:.4f}\n')
+
+# --- Decision Tree ---
+print("Decision Tree:")
+dt_avg_expected_loss, dt_avg_bias, dt_avg_var = bias_variance_decomp(
+    dt_model,
+    X_train_scaled, 
+    y_train_encoded, 
+    X_test_scaled, 
+    y_test_encoded, 
+    loss='0-1_loss',
+    num_rounds=100,
+    random_seed=40
+)
+print(f'Average expected loss: {dt_avg_expected_loss:.4f}')
+print(f'Average bias: {dt_avg_bias:.4f}')
+print(f'Average variance: {dt_avg_var:.4f}\n')
+
+# --- RF ---
+print("RF:")
+rf_avg_expected_loss, rf_avg_bias, rf_avg_var = bias_variance_decomp(
+    rf_model, 
+    X_train_scaled, 
+    y_train_encoded, 
+    X_test_scaled, 
+    y_test_encoded, 
+    loss='0-1_loss', 
+    num_rounds=100, 
+    random_seed=40
+)
+print(f'Average expected loss: {rf_avg_expected_loss:.4f}')
+print(f'Average bias: {rf_avg_bias:.4f}')
+print(f'Average variance: {rf_avg_var:.4f}\n')
+
+# --- SVM (RBF) --- 
+print("SVM (RBF):")
+
+# Perform bias-variance decomposition for SVM (RBF) with fewer rounds
+svm_avg_expected_loss, svm_avg_bias, svm_avg_var = bias_variance_decomp(
+    svm_model, 
+    X_train_scaled, 
+    y_train_encoded,  
+    X_test_scaled, 
+    y_test_encoded, 
+    loss='0-1_loss', 
+    num_rounds=100, 
+    random_seed=40
+)
+
+print(f'Average expected loss: {svm_avg_expected_loss:.4f}')
+print(f'Average bias: {svm_avg_bias:.4f}')
+print(f'Average variance: {svm_avg_var:.4f}\n')

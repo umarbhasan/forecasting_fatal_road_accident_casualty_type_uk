@@ -247,3 +247,17 @@ print(classification_report(y_test, rf_predictions, zero_division=0))
 # Print accuracy and classification report for SVM (RBF)
 print("SVM (RBF) Classifier Accuracy:", accuracy_score(y_test, svm_predictions))
 print(classification_report(y_test, svm_predictions, zero_division=0))
+
+models = ['Logistic Regression', 'k-NN', 'Decision Tree', 'Random Forest', 'SVM']
+accuracies = [accuracy_score(y_test, lr_predictions), 
+              accuracy_score(y_test, knn_predictions), 
+              accuracy_score(y_test, dt_predictions),
+              accuracy_score(y_test, rf_predictions),
+              accuracy_score(y_test, svm_predictions)]
+
+plt.figure(figsize=(8, 6))
+plt.bar(models, accuracies)
+plt.title('Model Accuracy Comparison Before SMOTE')
+plt.ylabel('Accuracy')
+plt.ylim([0, 1])  # Set y-axis limits for better comparison
+plt.show()

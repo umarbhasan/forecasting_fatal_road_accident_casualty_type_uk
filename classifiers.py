@@ -638,3 +638,19 @@ plt.title('Classifier Performance based on Confusion Matrices')
 
 # Show the plot
 plt.show()
+
+# Perform cross-validation for Logistic Regression
+lr_cv_scores = cross_val_score(lr_model, X_train_scaled, y_train, cv=10)
+print("Logistic Regression Classifier CV Score:", lr_cv_scores.mean())
+# Perform cross-validation for KNN
+knn_cv_scores = cross_val_score(knn_model, X_train_scaled, y_train, cv=10)
+print("k-NN Classifier CV Score:", knn_cv_scores.mean())
+# Perform cross-validation for Decision Tree
+dt_cv_scores = cross_val_score(dt_model, X_train_scaled, y_train, cv=10)
+print("Decision Tree Classifier CV Score:", dt_cv_scores.mean())
+# Perform cross-validation for Random Forest
+rf_cv_scores = cross_val_score(rf_model, X_train_scaled, y_train, cv=10)
+print("Random Forest Classifier CV Score:", rf_cv_scores.mean())
+# Perform cross-validation for SVM (RBF)
+svm_cv_scores = cross_val_score(svm_model, X_train_scaled, y_train, cv=10) 
+print("SVM (RBF) Classifier CV Score:", svm_cv_scores.mean())

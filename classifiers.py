@@ -823,3 +823,13 @@ svm_auc = roc_auc_score(y_test, svm_probs, multi_class='ovr')
 
 # Print the ROC AUC score for SVM (RBF)
 print(f"SVM (RBF) ROC AUC: {svm_auc:.4f}")
+
+models = ['Logistic Regression', 'k-NN', 'Decision Tree', 'Random Forest', 'SVM']
+auc_scores = [lr_auc, knn_auc, dt_auc, rf_auc, svm_auc]
+
+plt.figure(figsize=(8, 6))
+plt.bar(models, auc_scores)
+plt.title('ROC-AUC Comparison After SMOTE')
+plt.ylabel('ROC-AUC')
+plt.ylim([0, 1])  # Set y-axis limits for better comparison
+plt.show()

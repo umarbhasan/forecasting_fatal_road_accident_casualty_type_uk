@@ -20,6 +20,7 @@ from sklearn.preprocessing import label_binarize  # Used to convert multi-class 
 from sklearn.multiclass import OneVsRestClassifier  # Strategy for multi-class classification by treating each class as a separate binary classification problem
 from sklearn.metrics import roc_curve, auc  # Functions for calculating ROC curve and area under the curve (AUC)
 from sklearn.impute import SimpleImputer # Used to impute NaN values with the mean
+from sklearn.inspection import permutation_importance # Import the permutation_importance function for kNN and SVM
 
 # Load the datasets
 df_accidents = pd.read_csv('C:/Users/umarb/OneDrive/Documents/BS in CSE/3rd Year/1st Semester/CSE445/fatalaccidentdata.csv')
@@ -140,3 +141,89 @@ svm_model.fit(X_train_scaled, y_train)
 
 # Predictions for SVM
 svm_predictions = svm_model.predict(X_test_scaled)
+
+# Feature Importance
+
+# --- Logistic Regression ---
+# Note: Feature importance for Logistic Regression is different
+# We'll use coefficients as a proxy for importance
+lr_importances = np.abs(lr_model.coef_[0])  # Take absolute values of coefficients
+lr_indices = np.argsort(lr_importances)[::-1]
+plt.figure(figsize=(10, 8))
+plt.title("Feature Importance (Logistic Regression)")
+plt.bar(range(X_train_scaled.shape[1]), lr_importances[lr_indices], align="center")
+plt.xticks(range(X_train_scaled.shape[1]), X.columns[lr_indices], rotation=45, ha='right')
+plt.tight_layout()
+plt.show()
+
+# --- k-NN ---
+# Note: k-NN doesn't have a direct feature importance measure like some tree-based models.
+# We can use permutation importance as a workaround to estimate feature importance.
+
+# Calculate permutation importance for the k-NN model
+# `permutation_importance`:  This function randomly shuffles the values of each feature 
+#                            and measures how much the model's performance decreases.
+#                            A feature is considered important if shuffling its values leads to a significant drop in performance.
+# `knn_model`: The trained k-NN model.
+# `X_train_scaled`: The scaled training data.
+# `y_train`: The training labels.
+# `n_repeats=10`: The number of times the permutation is repeated for each feature.
+# `random_state=40`: A seed for the random number generator to ensure reproducibility.
+knn_result = permutation_importance(knn_model, X_train_scaled, y_train, n_repeats=10, random_state=40)
+
+# Get the mean importance scores from the permutation importance result
+knn_importances = knn_result.importances_mean  
+
+# Get indices that would sort the importance scores in descending order
+knn_indices = np.argsort(knn_importances)[::-1]  
+
+# Plotting
+plt.figure(figsize=(10, 8))  # Set the figure size for the plot
+plt.title("Feature Importance (k-NN)")  # Set the title of the plot
+
+# Create a bar plot of feature importances
+# `range(X_train_scaled.shape[1])`:  Provides the x-axis positions for the bars (number of features).
+# `knn_importances[knn_indices]`: The feature importance values sorted in descending order.
+# `align="center"`: Aligns the bars to the center of their x-axis positions.
+plt.bar(range(X_train_scaled.shape[1]), knn_importances[knn_indices], align="center")  
+
+# Set x-axis labels with feature names (rotated for better readability)
+plt.xticks(range(X_train_scaled.shape[1]), X.columns[knn_indices], rotation=45, ha='right')  
+
+plt.tight_layout()  # Adjust the layout to prevent labels from overlapping
+plt.show()  # Display the plot
+
+# --- Decision Tree ---
+dt_importances = dt_model.feature_importances_
+dt_indices = np.argsort(dt_importances)[::-1]
+plt.figure(figsize=(10, 8))
+plt.title("Feature Importance (Decision Tree)")
+plt.bar(range(X_train_scaled.shape[1]), dt_importances[dt_indices], align="center")
+plt.xticks(range(X_train_scaled.shape[1]), X.columns[dt_indices], rotation=45, ha='right')
+plt.tight_layout()
+plt.show()
+
+# --- Random Forest ---
+rf_importances = rf_model.feature_importances_
+rf_indices = np.argsort(rf_importances)[::-1]
+plt.figure(figsize=(10, 8))
+plt.title("Feature Importance (Random Forest)")
+plt.bar(range(X_train_scaled.shape[1]), rf_importances[rf_indices], align="center")
+plt.xticks(range(X_train_scaled.shape[1]), X.columns[rf_indices], rotation=45, ha='right')
+plt.tight_layout()
+plt.show()
+
+# Calculate permutation feature importance
+result = permutation_importance(svm_model, X_test_scaled, y_test, n_repeats=10, random_state=40)
+svm_importances = result.importances_mean
+
+# Sort feature importances
+svm_indices = np.argsort(svm_importances)[::-1]
+
+# Plotting
+plt.figure(figsize=(10, 8))
+plt.title("Feature Importance (SVM with RBF Kernel)")
+plt.bar(range(X_test_scaled.shape[1]), svm_importances[svm_indices], align="center")
+plt.xticks(range(X_test_scaled.shape[1]), X.columns[svm_indices], rotation=45, ha='right')
+plt.tight_layout()
+plt.show()

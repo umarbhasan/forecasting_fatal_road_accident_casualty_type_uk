@@ -755,3 +755,71 @@ plt.ylabel('True Positive Rate')  # Set y-axis label
 plt.title('ROC Curve Comparison (Micro-Average) After SMOTE')  # Set plot title
 plt.legend(loc="lower right")  # Place the legend in the lower right corner
 plt.show()  # Show the plot
+
+# --- Logistic Regression ---
+
+# Predict probabilities for the test set using the trained Logistic Regression model
+lr_probs = lr_model.predict_proba(X_test_scaled)  
+
+# Calculate the ROC AUC score for Logistic Regression
+# `roc_auc_score`:  Calculates the area under the receiver operating characteristic curve (ROC AUC).
+# `multi_class='ovr'`: Specifies the 'one-vs-rest' strategy for handling multi-class ROC AUC calculation.
+lr_auc = roc_auc_score(y_test, lr_probs, multi_class='ovr')  
+
+# Print the ROC AUC score for Logistic Regression (formatted to 4 decimal places)
+print(f"Logistic Regression ROC AUC: {lr_auc:.4f}")  
+
+# --- k-NN ---
+
+# Predict probabilities for the test set using the trained k-NN model
+knn_probs = knn_model.predict_proba(X_test_scaled)  
+
+# Calculate the ROC AUC score for k-NN
+knn_auc = roc_auc_score(y_test, knn_probs, multi_class='ovr')  
+
+# Print the ROC AUC score for k-NN
+print(f"k-NN ROC AUC: {knn_auc:.4f}")  
+
+# --- Decision Tree ---
+
+# Predict probabilities for the test set using the trained Decision Tree model
+dt_probs = dt_model.predict_proba(X_test_scaled)  
+
+# Calculate the ROC AUC score for Decision Tree
+dt_auc = roc_auc_score(y_test, dt_probs, multi_class='ovr')  
+
+# Print the ROC AUC score for Decision Tree
+print(f"Decision Tree ROC AUC: {dt_auc:.4f}")  
+
+# --- Random Forest ---
+
+# Predict probabilities for the test set using the trained Random Forest model
+rf_probs = rf_model.predict_proba(X_test_scaled)  
+
+# Calculate the ROC AUC score for Random Forest
+rf_auc = roc_auc_score(y_test, rf_probs, multi_class='ovr')  
+
+# Print the ROC AUC score for Random Forest
+print(f"Random Forest ROC AUC: {rf_auc:.4f}")
+
+# ... your existing code ...
+
+# --- SVM (RBF) ---
+
+# Ensure your SVM model is initialized with probability=True
+svm_model = SVC(kernel='rbf', random_state=40, class_weight='balanced', probability=True) 
+
+# Fit the SVM model to your training data (this was missing)
+svm_model.fit(X_train_scaled, y_train)  
+
+# Predict probabilities for the test set using the trained SVM (RBF) model
+svm_probs = svm_model.predict_proba(X_test_scaled)  
+
+# ... (rest of your existing code) ...
+
+# ... (rest of your existing code) ...
+# Calculate the ROC AUC score for SVM (RBF)
+svm_auc = roc_auc_score(y_test, svm_probs, multi_class='ovr')
+
+# Print the ROC AUC score for SVM (RBF)
+print(f"SVM (RBF) ROC AUC: {svm_auc:.4f}")

@@ -331,3 +331,16 @@ print("Random Forest Classifier CV Score:", rf_cv_scores.mean())
 # Perform cross-validation for SVM (RBF)
 svm_cv_scores = cross_val_score(svm_model, X_train_scaled, y_train, cv=10) 
 print("SVM (RBF) Classifier CV Score:", svm_cv_scores.mean())
+
+# Create a list of model names and their corresponding CV scores
+models = ['Logistic Regression', 'k-NN', 'Decision Tree', 'Random Forest', 'SVM (RBF)']
+cv_scores = [lr_cv_scores, knn_cv_scores, dt_cv_scores, rf_cv_scores, svm_cv_scores]
+
+# Create the box plot
+plt.figure(figsize=(10, 6))
+plt.boxplot(cv_scores, tick_labels=models)
+plt.title('Cross-Validation Scores Comparison Before SMOTE')
+plt.ylabel('Accuracy')
+plt.xticks(rotation=45)
+plt.tight_layout()
+plt.show()

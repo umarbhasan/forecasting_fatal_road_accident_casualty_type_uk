@@ -586,3 +586,19 @@ plt.ylabel('True')
 
 plt.tight_layout()
 plt.show()
+
+# Data for the bar plot
+classifiers = ['Logistic Regression', 'k-NN', 'Decision Tree', 'Random Forest']
+ratios = [10.67, 21.02, 20.39, 24.85]
+
+# Create the bar plot
+plt.figure(figsize=(10, 6)) 
+plt.bar(classifiers, ratios)
+
+# Add labels and title
+plt.xlabel('Classifier')
+plt.ylabel('Ratio of Correct to Incorrect Classifications')
+plt.title('Classifier Performance based on Confusion Matrices')
+
+# Show the plot
+plt.show()

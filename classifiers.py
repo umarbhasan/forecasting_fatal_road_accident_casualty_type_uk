@@ -667,3 +667,91 @@ plt.ylabel('Accuracy')
 plt.xticks(rotation=45)
 plt.tight_layout()
 plt.show()
+
+# --- Data Preprocessing ---
+
+# Binarize the target variable (y_test)
+# This converts the multi-class labels into a binary format (one-hot encoding) required for ROC curve analysis
+# `classes=np.unique(y_test)` ensures that the binarization considers all unique classes in the target variable
+y_test_bin = label_binarize(y_test, classes=np.unique(y_test))  
+n_classes = y_test_bin.shape[1]  # Get the number of classes
+
+# --- Model Preparation ---
+
+# Create OneVsRestClassifier for each model
+# OneVsRestClassifier is a strategy that fits one classifier per class. 
+# For each classifier, the class is fitted against all the other classes.
+lr_ovr = OneVsRestClassifier(lr_model)  # Logistic Regression
+knn_ovr = OneVsRestClassifier(knn_model)  # k-Nearest Neighbors
+dt_ovr = OneVsRestClassifier(dt_model)  # Decision Tree
+rf_ovr = OneVsRestClassifier(rf_model)  # Random Forest
+# Add SVM (RBF) to OneVsRestClassifier
+svm_ovr = OneVsRestClassifier(SVC(kernel='rbf', random_state=40, class_weight='balanced', probability=True))
+
+# --- Model Training ---
+
+# Fit the classifiers on the scaled training data (X_train_scaled) and training labels (y_train)
+lr_ovr.fit(X_train_scaled, y_train)  
+knn_ovr.fit(X_train_scaled, y_train)
+dt_ovr.fit(X_train_scaled, y_train)
+rf_ovr.fit(X_train_scaled, y_train)
+svm_ovr.fit(X_train_scaled, y_train)
+
+# --- Prediction ---
+
+# Get predicted probabilities for each class for the scaled test data (X_test_scaled)
+lr_probs = lr_ovr.predict_proba(X_test_scaled)
+knn_probs = knn_ovr.predict_proba(X_test_scaled)
+dt_probs = dt_ovr.predict_proba(X_test_scaled)
+rf_probs = rf_ovr.predict_proba(X_test_scaled)
+svm_probs = svm_ovr.predict_proba(X_test_scaled)
+
+# --- ROC Curve Plotting ---
+
+# Store models and their predicted probabilities in a dictionary for easy iteration
+models = {
+    "Logistic Regression": lr_probs,
+    "k-NN": knn_probs,
+    "Decision Tree": dt_probs,
+    "Random Forest": rf_probs,
+    "SVM (RBF)": svm_probs  # Add SVM
+}
+
+plt.figure(figsize=(10, 8))  # Set the figure size for the plot
+
+# Iterate through each model and its predicted probabilities
+for model_name, model_probs in models.items():
+    # Check for NaN values in predicted probabilities and impute with the mean if found
+    if np.isnan(model_probs).any():
+        print(f"Warning: NaN values found in {model_name} predictions. Imputing with mean.")
+        imputer = SimpleImputer(strategy='mean')
+        model_probs = imputer.fit_transform(model_probs)
+
+    # Compute ROC curve and ROC area for each class
+    fpr = dict()  # Dictionary to store false positive rates for each class
+    tpr = dict()  # Dictionary to store true positive rates for each class
+    roc_auc = dict()  # Dictionary to store AUC values for each class
+
+    for i in range(n_classes):
+        # Calculate ROC curve (fpr, tpr) and AUC (roc_auc) for each class
+        fpr[i], tpr[i], _ = roc_curve(y_test_bin[:, i], model_probs[:, i])
+        roc_auc[i] = auc(fpr[i], tpr[i])
+
+    # Compute micro-average ROC curve and AUC
+    # Micro-averaging aggregates the contributions of all classes to compute the average metric
+    fpr["micro"], tpr["micro"], _ = roc_curve(y_test_bin.ravel(), model_probs.ravel())  # Ravel flattens the arrays
+    roc_auc["micro"] = auc(fpr["micro"], tpr["micro"])
+
+    # Plot the micro-average ROC curve for the current model
+    plt.plot(fpr["micro"], tpr["micro"],
+             label=f'{model_name} (micro-average AUC = {roc_auc["micro"]:0.2f})')
+
+# Plot the diagonal line (random classifier)
+plt.plot([0, 1], [0, 1], 'k--')  
+plt.xlim([0.0, 1.0])  # Set x-axis limits
+plt.ylim([0.0, 1.05])  # Set y-axis limits
+plt.xlabel('False Positive Rate')  # Set x-axis label
+plt.ylabel('True Positive Rate')  # Set y-axis label
+plt.title('ROC Curve Comparison (Micro-Average) After SMOTE')  # Set plot title
+plt.legend(loc="lower right")  # Place the legend in the lower right corner
+plt.show()  # Show the plot

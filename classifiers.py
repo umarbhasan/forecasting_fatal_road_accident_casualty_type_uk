@@ -935,3 +935,23 @@ svm_avg_expected_loss, svm_avg_bias, svm_avg_var = bias_variance_decomp(
 print(f'Average expected loss: {svm_avg_expected_loss:.4f}')
 print(f'Average bias: {svm_avg_bias:.4f}')
 print(f'Average variance: {svm_avg_var:.4f}\n')
+
+loss_values = [0.0878, 0.0542, 0.0504, 0.0373, 0.0449]
+bias_values = [0.0857, 0.0451, 0.0390, 0.0368, 0.0408]
+variance_values = [0.0133, 0.0289, 0.0320, 0.0111, 0.0137]
+
+# You can use a grouped bar chart or separate bar charts for bias and variance
+
+# Example for grouped bar chart:
+bar_width = 0.30
+index = np.arange(len(models))
+
+plt.figure(figsize=(10, 6))
+plt.bar(index, loss_values, bar_width, label='Average Expected Loss')
+plt.bar(index+ bar_width, bias_values, bar_width, label='Average Bias')
+plt.bar(index + bar_width + bar_width, variance_values, bar_width, label='Average Variance')
+plt.xticks(index + bar_width + bar_width / 50, models)
+plt.title('Average Expected Loss, Average Bias, and Average Variance Comparison After SMOTE')
+plt.ylabel('Error')
+plt.legend()
+plt.show()

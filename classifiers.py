@@ -96,3 +96,12 @@ plt.ylabel('Frequency')
 plt.xticks(rotation=45, ha='right')
 plt.tight_layout()
 plt.show()
+
+# Correlation Matrix
+# Select only numeric columns for correlation analysis
+numeric_df = df.select_dtypes(include=[np.number])
+
+plt.figure(figsize=(12, 8))
+sns.heatmap(numeric_df.corr(), annot=True, cmap='coolwarm', fmt=".2f")
+plt.title('Correlation Matrix of Numeric Columns with Fatal Casualty Type')
+plt.show()

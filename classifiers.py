@@ -72,6 +72,15 @@ scaler = StandardScaler()
 X_train_scaled = scaler.fit_transform(X_train)
 X_test_scaled = scaler.transform(X_test)
 
+# Correlation Matrix
+# Select only numeric columns for correlation analysis
+numeric_df = df.select_dtypes(include=[np.number])
+
+plt.figure(figsize=(12, 8))
+sns.heatmap(numeric_df.corr(), annot=True, cmap='coolwarm', fmt=".2f")
+plt.title('Correlation Matrix of Numeric Columns with Fatal Casualty Type')
+plt.show()
+
 # Check class distribution
 print("Class distribution in dataset before SMOTE:")
 print(pd.Series(y).value_counts())
@@ -97,11 +106,37 @@ plt.xticks(rotation=45, ha='right')
 plt.tight_layout()
 plt.show()
 
-# Correlation Matrix
-# Select only numeric columns for correlation analysis
-numeric_df = df.select_dtypes(include=[np.number])
+# Initialize Logistic Regression classifier
+lr_model = LogisticRegression(random_state=40, class_weight='balanced', max_iter=1000, solver='newton-cg')
+lr_model.fit(X_train_scaled, y_train)
 
-plt.figure(figsize=(12, 8))
-sns.heatmap(numeric_df.corr(), annot=True, cmap='coolwarm', fmt=".2f")
-plt.title('Correlation Matrix of Numeric Columns with Fatal Casualty Type')
-plt.show()
+# Predictions for LR
+lr_predictions = lr_model.predict(X_test_scaled)
+
+# Initialize and train KNN classifier
+knn_model = KNeighborsClassifier(3)  # You can adjust n_neighbors
+knn_model.fit(X_train_scaled, y_train)
+
+# Predictions for KNN
+knn_predictions = knn_model.predict(X_test_scaled)
+
+# Initialize and train Decision Tree classifier
+dt_model = DecisionTreeClassifier(random_state=40, class_weight='balanced')
+dt_model.fit(X_train_scaled, y_train)
+
+#Predictions for DT
+dt_predictions = dt_model.predict(X_test_scaled)
+
+# Initialize and train Random Forest classifiers
+rf_model = RandomForestClassifier(random_state=40, class_weight='balanced')
+rf_model.fit(X_train_scaled, y_train)
+
+#Predictions for RF
+rf_predictions = rf_model.predict(X_test_scaled)
+
+# Initialize SVM classifier with an RBF kernel
+svm_model = SVC(kernel='rbf', random_state=40, class_weight='balanced') 
+svm_model.fit(X_train_scaled, y_train)
+
+# Predictions for SVM
+svm_predictions = svm_model.predict(X_test_scaled)

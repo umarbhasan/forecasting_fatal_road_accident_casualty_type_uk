@@ -534,6 +534,42 @@ plt.ylabel('Accuracy')
 plt.ylim([0, 1])  # Set y-axis limits for better comparison
 plt.show()
 
+# Categories (same for all models)
+categories = ['Bus_Driver', 'Bus_Passenger', 'Car_Driver', 'Car_Passenger', 'HGV_Driver', 
+              'HGV_Passenger', 'Motor_Cycle_Passenger', 'Motor_Cycle_Rider', 'Other_Vehicle_Occupant',
+              'Pedal_Cyclist', 'Pedestrian', 'Van_Driver', 'Van_Passenger']
+
+# F1-scores from the classification reports
+lr_scores = [1.00, 0.99, 0.66, 0.69, 0.94, 0.99, 0.94, 0.94, 0.99, 1.00, 0.99, 0.88, 0.86]
+knn_scores = [1.00, 1.00, 0.72, 0.75, 0.99, 1.00, 0.98, 0.98, 0.99, 1.00, 1.00, 1.00, 1.00]
+dt_scores = [1.00, 1.00, 0.73, 0.76, 0.98, 1.00, 0.98, 0.98, 0.99, 1.00, 1.00, 0.98, 0.99]
+rf_scores = [1.00, 1.00, 0.77, 0.78, 0.99, 1.00, 0.99, 0.98, 0.99, 1.00, 1.00, 0.99, 1.00]
+svm_scores = [1.00, 1.00, 0.77, 0.78, 0.98, 1.00, 0.98, 0.98, 0.99, 1.00, 1.00, 0.99, 1.00] # Added SVM scores
+
+# Set up the plot
+bar_width = 0.15  # Reduced bar width to accommodate 5 models
+index = np.arange(len(categories))
+
+fig, ax = plt.subplots(figsize=(16, 8)) 
+
+# Create bars for each model (including SVM)
+rects1 = ax.bar(index, lr_scores, bar_width, color='blue', label='LR')
+rects2 = ax.bar(index + bar_width, knn_scores, bar_width, color='orange', label='K-NN')
+rects3 = ax.bar(index + 2 * bar_width, dt_scores, bar_width, color='green', label='DT')
+rects4 = ax.bar(index + 3 * bar_width, rf_scores, bar_width, color='red', label='RF')
+rects5 = ax.bar(index + 4 * bar_width, svm_scores, bar_width, color='purple', label='SVM') # Added SVM bars
+
+# Set chart labels and title
+ax.set_xlabel('Fatal Casualty Type')
+ax.set_ylabel('F1-Score')
+ax.set_title('F1-Scores for Different Fatal Casualty Types After SMOTE')
+ax.set_xticks(index + 2 * bar_width)  # Adjusted x-ticks for 5 models
+ax.set_xticklabels(categories, rotation=45, ha='right')
+ax.legend()
+
+plt.tight_layout()
+plt.show()
+
 # Confusion matrix of LR
 lr_cm = confusion_matrix(y_test, lr_predictions)
 
@@ -588,8 +624,8 @@ plt.tight_layout()
 plt.show()
 
 # Data for the bar plot
-classifiers = ['Logistic Regression', 'k-NN', 'Decision Tree', 'Random Forest']
-ratios = [10.67, 21.02, 20.39, 24.85]
+classifiers = ['Logistic Regression', 'kNN', 'Decision Tree', 'Random Forest', 'SVM']
+ratios = [10.67, 21.02, 20.39, 24.85, 23.98]
 
 # Create the bar plot
 plt.figure(figsize=(10, 6)) 

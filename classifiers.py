@@ -833,3 +833,8 @@ plt.title('ROC-AUC Comparison After SMOTE')
 plt.ylabel('ROC-AUC')
 plt.ylim([0, 1])  # Set y-axis limits for better comparison
 plt.show()
+
+# Encode the target variable
+le = LabelEncoder()
+y_train_encoded = le.fit_transform(y_train)
+y_test_encoded = le.transform(y_test)
